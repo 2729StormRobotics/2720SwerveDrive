@@ -13,6 +13,8 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.math.MathUtil;
@@ -24,6 +26,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -95,11 +100,17 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+
     // 1. Create trajectory settings
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond, 
     Constants.AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
 
     // 2. Generate trajectory
+
+    /*
+    Basic trajectory
+
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
@@ -107,6 +118,20 @@ public class RobotContainer {
               new Translation2d(1, -1)),
       new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
       trajectoryConfig);
+
+      */ 
+
+    String filename = "pathplanner/generatedJSON/New Path.wpilib.json";
+    Trajectory trajectory;
+
+      try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException exception) {
+      DriverStation.reportError("Unable to open trajectory" + filename, exception.getStackTrace());
+      System.out.println("Unable to read from file " + filename);
+      return new InstantCommand();
+    }
 
       // 3. Define PID controllers for tracking trajectory
       PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
