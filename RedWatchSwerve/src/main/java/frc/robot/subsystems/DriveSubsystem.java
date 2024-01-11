@@ -105,7 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("BR turn", m_rearRight.m_turningEncoder.getPosition());
         SmartDashboard.putNumber("FL Distance", m_frontLeft.m_drivingEncoder.getPosition());
         SmartDashboard.putNumber("Heading", getHeading());
-
+        SmartDashboard.putString("2d Pose", getPose().toString());
       }
 
   /**
@@ -257,7 +257,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return -m_gyro.getAngle();
+    return -Math.IEEEremainder(m_gyro.getAngle(), 360);
   }
 
   /**
