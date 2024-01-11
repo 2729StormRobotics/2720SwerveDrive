@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -23,6 +24,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -47,9 +49,11 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
+
   // The gyro sensor
   // private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
-  // private final Pigeon2 m_gyro = new Pigeon2(Constants.Pigeon2ID);
+  // private final Pigeon2 m_gyro = new Pigeon2(Constants.Pigeon2ID, "rio");   
+  public AHRS m_gyro ;
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -59,19 +63,10 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
-  public AHRS m_gyro;
 
 
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-      DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getAngle()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+  SwerveDriveOdometry m_odometry;
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -80,6 +75,15 @@ public class DriveSubsystem extends SubsystemBase {
     } catch (RuntimeException ex){
       DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
     }
+    m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      Rotation2d.fromDegrees(m_gyro.getAngle()),
+      new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+      });
   }
 
   
@@ -94,7 +98,14 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-  }
+        SmartDashboard.putNumber("FL turn", m_frontLeft.m_turningEncoder.getPosition());
+        SmartDashboard.putNumber("FR turn", m_frontRight.m_turningEncoder.getPosition());
+        SmartDashboard.putNumber("BL turn", m_rearLeft.m_turningEncoder.getPosition());
+        SmartDashboard.putNumber("BR turn", m_rearRight.m_turningEncoder.getPosition());
+        SmartDashboard.putNumber("FL Distance", m_frontLeft.m_drivingEncoder.getPosition());
+        SmartDashboard.putNumber("Heading", getHeading());
+
+      }
 
   /**
    * Returns the currently-estimated pose of the robot.
