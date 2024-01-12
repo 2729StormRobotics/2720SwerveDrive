@@ -47,7 +47,14 @@ public class Vision extends SubsystemBase {
     return area; 
   }
 
-
+  public double rotationAlign() {
+    double turnError = 0;
+    double turnPower = 0;
+    turnError = getX();
+    turnPower = turnError * Constants.VisionConstants.kP;
+    turnPower += Math.copySign(Constants.VisionConstants.kS, turnPower);
+    return turnPower;
+  }
 
 
   @Override

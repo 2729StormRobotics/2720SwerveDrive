@@ -88,20 +88,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    double turnError = 0;
-    double turnPower = 0;
-    turnError = m_vision.getX();
-    turnPower = turnError * Constants.VisionConstants.kP;
-    turnPower += Math.copySign(Constants.VisionConstants.kS, turnPower);
-    final double m_turnPower = turnPower;
 
-    new JoystickButton(m_driverController, Button.kY.value)
-    .whileTrue(new RunCommand(      
-      () -> m_robotDrive.drive(
-          -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-          -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-          -m_turnPower,
-          true, true)));
 
     //locks wheels
     new JoystickButton(m_driverController, Button.kX.value)
@@ -111,6 +98,15 @@ public class RobotContainer {
 
     //zero heading 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
+    new JoystickButton(m_driverController, Button.kY.value).onTrue(new RunCommand(() -> m_robotDrive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+                m_vision.rotationAlign(),
+                true, true), m_robotDrive))));
   }
 
   /**
