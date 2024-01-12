@@ -152,8 +152,9 @@ public final class Constants {
     public static final double kLimeLightAngle = -13; //FIXME
     public static final double kLimeLightHeight = 0; // from the CAD for the ALPHA BOT
     public static final double kLimeLightDepth = 0; // distance from limelight to front of the bot (with bumpers)
-    public static final double kP = 0; 
-    public static final double kS = 0; 
+    public static final double kP = 0.012; 
+    public static final double kS = 0;
+    public static final int kTolerance = 3; 
 
   }
 }

@@ -48,12 +48,16 @@ public class Vision extends SubsystemBase {
   }
 
   public double rotationAlign() {
+    setLight(1);
     double turnError = 0;
     double turnPower = 0;
     turnError = getX();
+    if (Math.abs(turnError) < Constants.VisionConstants.kTolerance) {
+      return 0;
+    }
     turnPower = turnError * Constants.VisionConstants.kP;
     turnPower += Math.copySign(Constants.VisionConstants.kS, turnPower);
-    return turnPower;
+    return -turnPower;
   }
 
 
@@ -68,5 +72,6 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putString("Target", Vision.target);
+    SmartDashboard.putNumber("Turn Power for Align", rotationAlign());
   }
 }

@@ -53,6 +53,8 @@ public class RobotContainer {
   private final Vision m_vision = new Vision();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  public static boolean visionDriveMode = false;
+
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -68,11 +70,19 @@ public class RobotContainer {
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
+        // new RunCommand(
+        //     () -> m_robotDrive.drive(
+        //         MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+        //         MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+        //         visionDriveMode ? -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband)
+        //         : m_vision.rotationAlign(),
+        //         true, true),
+        //     m_robotDrive));
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
+                MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+                MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+                m_vision.rotationAlign() - MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
           
@@ -96,17 +106,14 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
+    new JoystickButton(m_driverController, Button.kY.value)
+      .onTrue(new RunCommand(() -> switchVisionDriveMode()));
     //zero heading 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
-    new JoystickButton(m_driverController, Button.kY.value).onTrue(new RunCommand(() -> m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-                m_vision.rotationAlign(),
-                true, true), m_robotDrive))));
+  }
+
+  public void switchVisionDriveMode() {
+    RobotContainer.visionDriveMode = !RobotContainer.visionDriveMode;
   }
 
   /**
