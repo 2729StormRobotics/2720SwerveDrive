@@ -12,6 +12,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Vision;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -49,6 +50,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final Vision m_vision = new Vision();
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // The driver's controller
@@ -72,6 +75,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
+          
   }
 
   /**
@@ -84,6 +88,20 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    double turnError = 0;
+    double turnPower = 0;
+    turnError = m_vision.getX();
+    turnPower = turnError * Constants.VisionConstants.kP;
+    turnPower += Math.copySign(Constants.VisionConstants.kS, turnPower);
+    final double m_turnPower = turnPower;
+
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whileTrue(new RunCommand(      
+      () -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+          -m_turnPower,
+          true, true)));
 
     //locks wheels
     new JoystickButton(m_driverController, Button.kX.value)
@@ -91,6 +109,7 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
+    //zero heading 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }
 
