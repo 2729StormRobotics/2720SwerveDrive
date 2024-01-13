@@ -53,7 +53,7 @@ public class RobotContainer {
   private final Vision m_vision = new Vision();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static boolean visionDriveMode = false;
+  public static int visionDriveMode = 0;
 
 
   // The driver's controller
@@ -105,16 +105,13 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-
-    new JoystickButton(m_driverController, Button.kY.value)
-      .onTrue(new RunCommand(() -> switchVisionDriveMode()));
     //zero heading 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
+  
+    new JoystickButton(m_driverController, Button.kY.value)
+      .whileTrue(new RunCommand(() -> {visionDriveMode = visionDriveMode == 0 ? 1 : 0; m_vision.setPipeline(visionDriveMode);}));
   }
 
-  public void switchVisionDriveMode() {
-    RobotContainer.visionDriveMode = !RobotContainer.visionDriveMode;
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

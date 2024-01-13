@@ -55,9 +55,13 @@ public class Vision extends SubsystemBase {
     if (Math.abs(turnError) < Constants.VisionConstants.kTolerance) {
       return 0;
     }
-    turnPower = turnError * Constants.VisionConstants.kP;
-    turnPower += Math.copySign(Constants.VisionConstants.kS, turnPower);
+    turnPower = turnError * Constants.VisionConstants.kPTurn;
+    turnPower += Math.copySign(Constants.VisionConstants.kSTurn, turnPower);
     return -turnPower;
+  }
+
+  public void switchPipeline(int pipeline) {
+    table.getEntry("pipeline").setNumber(pipeline);
   }
 
 
