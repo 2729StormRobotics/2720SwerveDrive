@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -18,9 +21,11 @@ public class Vision extends SubsystemBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry targetpose_robotspace = table.getEntry("campose");
   private double x;
   private double y;
   private double area;
+  private double[] transformation;
   public Vision() {
     table.getEntry("pipeline").setNumber(Constants.VisionConstants.kAprilTagPipeline);
     table.getEntry("ledMode").setNumber(Constants.VisionConstants.kLightOffValue);
@@ -47,6 +52,10 @@ public class Vision extends SubsystemBase {
     return area; 
   }
 
+  public double[] targetpose_robotspace() {
+    return transformation;
+  }
+
   public double rotationAlign() {
     setLight(1);
     double turnError = 0;
@@ -71,11 +80,13 @@ public class Vision extends SubsystemBase {
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
     area = ta.getDouble(0.0);
+    transformation = targetpose_robotspace.getDoubleArray(new double[6]);
 
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putString("Target", Vision.target);
     SmartDashboard.putNumber("Turn Power for Align", rotationAlign());
+    SmartDashboard.putNumberArray("Transform3d", transformation);
   }
 }
