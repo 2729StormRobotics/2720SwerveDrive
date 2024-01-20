@@ -12,7 +12,13 @@ import frc.robot.subsystems.ExampleSubsystem;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.math.MathUtil;
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -22,12 +28,16 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,6 +50,9 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  // Will allow to choose which auto command to run from the shuffleboard
+  private final SendableChooser<Command> autoChooser;
+  
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -47,6 +60,16 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Puts auto chooser onto shuffleboard
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    
+    // Named Commands
+    NamedCommands.registerCommand("revToSpeed", new RevToSpeed());
+    NamedCommands.registerCommand("runIntake", new RunIntake());
+    NamedCommands.registerCommand("shootSpeaker", new ShootSpeaker());
+    NamedCommands.registerCommand("visionAlign", new VisionAlign());
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -89,61 +112,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-
-    // 1. Create trajectory settings
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond, 
-    Constants.AutoConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
-
-    // 2. Generate trajectory
-
-    /*
-    Basic trajectory
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-              new Translation2d(1, 0),
-              new Translation2d(1, -1)),
-      new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-      trajectoryConfig);
-
-      */ 
-
-    String filename = "pathplanner/generatedJSON/New Path.wpilib.json";
-    Trajectory trajectory;
-
-      try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException exception) {
-      DriverStation.reportError("Unable to open trajectory" + filename, exception.getStackTrace());
-      System.out.println("Unable to read from file " + filename);
-      return new InstantCommand();
-    }
-
-      // 3. Define PID controllers for tracking trajectory
-      PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-      PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-      ProfiledPIDController thetaController = new ProfiledPIDController(
-              AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-      thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-      // 4. Construct command to follow trajectory
-      SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        trajectory,
-        m_robotDrive::getPose,
-        DriveConstants.kDriveKinematics,
-        xController,
-        yController,
-        thetaController,
-        m_robotDrive::setModuleStates,
-        m_robotDrive);
-
-        // 5. Add some init and wrap-up, and return everything
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
-                swerveControllerCommand,
-                new InstantCommand(() -> m_robotDrive.drive(0, 0, 0, false, false)));
+    // return new PathPlannerAuto("test auto");
+    return autoChooser.getSelected();
   }
 }
