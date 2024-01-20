@@ -32,7 +32,7 @@ public final class Constants {
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(5);
+    public static final double kTrackWidth = Units.inchesToMeters(26.5);
     // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = Units.inchesToMeters(26.5);
     // Distance between front and back wheels on robot
@@ -61,6 +61,7 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+	  public static final double kRobotRadius = kTrackWidth * Math.sqrt(2) / 2;
 
   }
   public static class AutoConstants {

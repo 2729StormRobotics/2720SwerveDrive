@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -81,6 +86,30 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
+    
+
+    // Autobuilder (Pathplanner)
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetOdometry,
+      this::getChassisSpeeds,
+      this::driveRobotRelative,
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(Constants.AutoConstants.kPXController, 0, 0), 
+        new PIDConstants(Constants.AutoConstants.kPThetaController, 0, 0), 
+        Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+        Constants.DriveConstants.kRobotRadius,
+        new ReplanningConfig()
+      ),
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      },
+      this
+    );
   }
 
   
@@ -128,6 +157,16 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         },
         pose);
+  }
+
+  public SwerveModuleState[] getModuleStates() {
+    SwerveModuleState[] states = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
+    return states;
+  }
+
+  // Method to get the Chassis Speeds
+  public ChassisSpeeds getChassisSpeeds() {
+    return Constants.DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
   }
 
   /**
@@ -232,6 +271,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+  }
+
+  // Sets the module states based off the ChassisSpeeds Object
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = Constants.DriveConstants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
