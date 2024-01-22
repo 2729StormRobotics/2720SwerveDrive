@@ -61,7 +61,7 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
-	  public static final double kRobotRadius = kTrackWidth * Math.sqrt(2) / 2;
+    public static final double kRobotRadius = DriveConstants.kTrackWidth * Math.sqrt(2) / 2;
 
   }
   public static class AutoConstants {
@@ -144,4 +144,23 @@ public final class Constants {
   }
   public static final String kCANivoreCANBusName = "canivore";
   public static final int Pigeon2ID = 1;
+
+
+  public static final class VisionConstants {
+    public static final int kAprilTagPipeline = 1;
+    public static final int kLightOffValue = 1;
+    public static final int kLightOnValue = 3;
+    public static final double kLimeLightAngle = -13; //FIXME
+    public static final double kLimeLightHeight = 0; // from the CAD for the ALPHA BOT
+    public static final double kLimeLightDepth = 0; // distance from limelight to front of the bot (with bumpers)
+    public static final double kPTurn = 0.012; 
+    public static final double kSTurn = 0;
+    public static final double kPX = 0.012; 
+    public static final double kPY = 0.012; 
+
+
+    public static final int kTolerance = 3;
+    public static final double kDistanceTolerance = 3; 
+
+  }
 }
