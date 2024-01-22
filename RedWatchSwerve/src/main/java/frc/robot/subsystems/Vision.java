@@ -52,6 +52,15 @@ public class Vision extends SubsystemBase {
     return area; 
   }
 
+  public double getZ() {
+    transformation = targetpose_robotspace.getDoubleArray(new double[6]);
+    return transformation[1];
+  }
+
+  public double getSkew() {
+    transformation = targetpose_robotspace.getDoubleArray(new double[6]);
+    return transformation[4];
+
   public double[] targetpose_robotspace() {
     return transformation;
   }
