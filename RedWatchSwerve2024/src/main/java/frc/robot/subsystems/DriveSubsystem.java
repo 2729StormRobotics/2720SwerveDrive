@@ -25,6 +25,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -49,7 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
-
+  
+  private Field2d m_field = new Field2d();
 
   // The gyro sensor
   // private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
@@ -104,7 +106,7 @@ public class DriveSubsystem extends SubsystemBase {
       () -> {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
+          return alliance.get() == DriverStation.Alliance.Blue;
         }
         return false;
       },
@@ -131,6 +133,8 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("FL Distance", m_frontLeft.m_drivingEncoder.getPosition());
         SmartDashboard.putNumber("Heading", getHeading());
         SmartDashboard.putString("2d Pose", getPose().toString());
+        m_field.setRobotPose(m_odometry.getPoseMeters());
+        SmartDashboard.putData("Field", m_field);
       }
 
   /**
@@ -157,6 +161,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         },
         pose);
+    
   }
 
   public SwerveModuleState[] getModuleStates() {
@@ -311,4 +316,6 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+
 }

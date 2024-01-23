@@ -9,6 +9,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Vision;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -48,6 +49,7 @@ import frc.robot.commands.*;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final Vision m_vision = new Vision();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Will allow to choose which auto command to run from the shuffleboard
@@ -69,6 +71,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("runIntake", new RunIntake());
     NamedCommands.registerCommand("shootSpeaker", new ShootSpeaker());
     NamedCommands.registerCommand("visionAlign", new VisionAlign());
+    NamedCommands.registerCommand("TestIntake", new TestIntake(m_vision));
+    NamedCommands.registerCommand("TestShoot", new TestShoot(m_vision));
+
+
 
     // Configure the button bindings
     configureButtonBindings();
@@ -104,6 +110,9 @@ public class RobotContainer {
             m_robotDrive));
 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
+    new JoystickButton(m_driverController, Button.kB.value).whileTrue(new TestShoot(m_vision));
+    new JoystickButton(m_driverController, Button.kY.value).whileTrue(new TestIntake(m_vision));
+
   }
 
   /**
