@@ -25,16 +25,10 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "n3"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.0,
-      "rotationDegrees": 0.0,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -105,7 +99,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -40.0,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

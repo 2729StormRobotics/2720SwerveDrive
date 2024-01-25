@@ -65,11 +65,11 @@ public final class Constants {
 
   }
   public static class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 0.5;
+    public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond = //
-                DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
-    public static final double kMaxAcceletrationMetersPerSecondSquared = 1.5;
-    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
+                Math.toRadians(540);
+    public static final double kMaxAcceletrationMetersPerSecondSquared = 3;
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.toRadians(720);
     public static final double kPXController = 1.5;
     public static final double kPYController = 1.5;
     public static final double kPThetaController = 3;
