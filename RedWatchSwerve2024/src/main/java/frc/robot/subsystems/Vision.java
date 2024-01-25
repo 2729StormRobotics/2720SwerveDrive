@@ -87,18 +87,18 @@ public double getZ() {
     return xPower;
   }
 
-  public double yAlign(){
+  public double zAlign(){
     setLight(1);
-    double yError = 0;
-    double yPower = 0;
-    yError = getY();
-    if (Math.abs(yError) < Constants.VisionConstants.kDistanceTolerance) {
+    double zError = 0;
+    double zPower = 0;
+    zError = getZ();
+    if (Math.abs(zError) < Constants.VisionConstants.kDistanceTolerance) {
       return 0;
     }
     
-    yPower = yPower * Constants.VisionConstants.kPY;
-    yPower += Math.copySign(Constants.VisionConstants.kSDrive, yPower);
-    return yPower;
+    zPower = zPower * Constants.VisionConstants.kPY;
+    zPower += Math.copySign(Constants.VisionConstants.kSDrive, zPower);
+    return zPower;
   }
 
   public double rotationAlign() {
@@ -135,11 +135,7 @@ public double getZ() {
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putString("Target", Vision.target);
     SmartDashboard.putNumber("Turn Power for Align", rotationAlign());
-    SmartDashboard.putNumber("Transform1", transformation[0]); // idk
-    SmartDashboard.putNumber("Transform2", transformation[1]); // idk
-    SmartDashboard.putNumber("Transform3", transformation[2]); // idk
-    SmartDashboard.putNumber("Transform4", transformation[3]); // Roll
-    SmartDashboard.putNumber("Transform5", transformation[4]); // Skew
-    SmartDashboard.putNumber("Transform6", transformation[5]); // Pitch
+    SmartDashboard.putNumber("Skew", getSkew());
+    
   }
 }

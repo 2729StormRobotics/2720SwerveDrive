@@ -109,7 +109,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   
     new JoystickButton(m_driverController, Button.kY.value)
-      .whileTrue(new RunCommand(() -> {visionDriveMode = visionDriveMode == 0 ? 1 : 0; m_vision.setPipeline(visionDriveMode);}));
+      .whileTrue(new RunCommand(() -> m_robotDrive.drive(m_vision.xAlign(), m_vision.zAlign(), m_vision.rotationAlign(), false, true)));
   }
 
 

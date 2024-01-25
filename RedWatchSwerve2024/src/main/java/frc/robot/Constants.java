@@ -161,7 +161,7 @@ public final class Constants {
 
 
     public static final int kTolerance = 3;
-    public static final double kDistanceTolerance = 0.1;
+    public static final double kDistanceTolerance = 0.3;
 
   }
 }
