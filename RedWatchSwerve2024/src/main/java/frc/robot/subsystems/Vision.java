@@ -41,6 +41,17 @@ public class Vision extends SubsystemBase {
     table.getEntry("ledMode").setNumber(value);
   }
 
+  public double getSkew(){
+    return transformation[4];
+  }
+
+   public double getRoll(){
+    return transformation[3];
+  }
+   public double getPitch(){
+    return transformation[5];
+  }
+
   public double getX() {
     return x;
   }
@@ -60,6 +71,34 @@ public double getZ() {
 
   public double[] targetpose_robotspace() {
     return transformation;
+  }
+
+  public double xAlign(){
+    setLight(1);
+    double xError = 0;
+    double xPower = 0;
+    xError = getSkew();
+    if (Math.abs(xError) < Constants.VisionConstants.kDistanceTolerance) {
+      return 0;
+    }
+
+    xPower = xPower * Constants.VisionConstants.kPX;
+    xPower += Math.copySign(Constants.VisionConstants.kSDrive, xPower);
+    return xPower;
+  }
+
+  public double yAlign(){
+    setLight(1);
+    double yError = 0;
+    double yPower = 0;
+    yError = getY();
+    if (Math.abs(yError) < Constants.VisionConstants.kDistanceTolerance) {
+      return 0;
+    }
+    
+    yPower = yPower * Constants.VisionConstants.kPY;
+    yPower += Math.copySign(Constants.VisionConstants.kSDrive, yPower);
+    return yPower;
   }
 
   public double rotationAlign() {

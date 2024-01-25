@@ -157,10 +157,11 @@ public final class Constants {
     public static final double kSTurn = 0;
     public static final double kPX = 0.012; 
     public static final double kPY = 0.012; 
+    public static final double kSDrive = 0;
 
 
     public static final int kTolerance = 3;
-    public static final double kDistanceTolerance = 3; 
+    public static final double kDistanceTolerance = 0.1;
 
   }
 }
