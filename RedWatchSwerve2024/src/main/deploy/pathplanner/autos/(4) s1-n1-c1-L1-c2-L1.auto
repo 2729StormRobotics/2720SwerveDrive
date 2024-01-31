@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Path 1"
+                  "pathName": "s1-n1"
                 }
               }
             ]
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Path 2"
+                  "pathName": "n1-c1-L1"
                 }
               }
             ]
@@ -89,7 +89,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Path 3"
+            "pathName": "L1-c2-L1"
           }
         },
         {
