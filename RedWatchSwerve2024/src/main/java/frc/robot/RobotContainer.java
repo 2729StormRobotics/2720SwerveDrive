@@ -122,6 +122,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("test auto");
+    m_robotDrive.zeroHeading();
     return autoChooser.getSelected();
   }
 }
