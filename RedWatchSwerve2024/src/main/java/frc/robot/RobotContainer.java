@@ -82,12 +82,21 @@ public class RobotContainer {
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
+        // // Turning is controlled by the X axis of the right stick.
+        // new RunCommand(
+        //     () -> m_robotDrive.drive(
+        //         -MathUtil.applyDeadband(Math.copySign(m_driverController.getLeftY()*m_driverController.getLeftY(), m_driverController.getLeftY())*0.6, OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(Math.copySign(m_driverController.getLeftX()*m_driverController.getLeftX(), m_driverController.getLeftX())*0.6, OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(Math.copySign(m_driverController.getRightX()*m_driverController.getRightX(), m_driverController.getRightX())*1, OIConstants.kDriveDeadband),
+        //         true, true),
+        //     m_robotDrive));
+
+        
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY()*0.6, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX()*0.6, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX()*1, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
   }
@@ -122,7 +131,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("test auto");
-    m_robotDrive.zeroHeading();
+    // m_robotDrive.zeroHeading();
     return autoChooser.getSelected();
   }
 }
