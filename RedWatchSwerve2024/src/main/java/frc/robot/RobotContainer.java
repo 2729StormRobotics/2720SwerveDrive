@@ -56,10 +56,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("visionAlign", new VisionAlign());
     NamedCommands.registerCommand("TestIntake", new TestIntake(m_vision));
     NamedCommands.registerCommand("TestShoot", new TestShoot(m_vision));
-    NamedCommands.registerCommand("ColorPurple", new setLEDs(m_lights, LEDs.purple));
-    NamedCommands.registerCommand("ColorRed", new setLEDs(m_lights, LEDs.red));
-    NamedCommands.registerCommand("ColorBlue", new setLEDs(m_lights, LEDs.blue));
-    NamedCommands.registerCommand("ColorWhite", new setLEDs(m_lights, LEDs.white));
+    NamedCommands.registerCommand("ColorPurple", new SetLEDColor(m_lights, LEDs.purple));
+    NamedCommands.registerCommand("ColorRed", new SetLEDColor(m_lights, LEDs.red));
+    NamedCommands.registerCommand("ColorBlue", new SetLEDColor(m_lights, LEDs.blue));
+    NamedCommands.registerCommand("ColorWhite", new SetLEDColor(m_lights, LEDs.white));
     NamedCommands.registerCommand("ColorRainbow",new RunCommand(()-> LEDSegment.MainStrip.setRainbowAnimation(1)));
     // RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive))
 
