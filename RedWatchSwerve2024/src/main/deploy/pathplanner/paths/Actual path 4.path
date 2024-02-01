@@ -1,0 +1,73 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.753760053635559,
+        "y": 5.7679842244811805
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.089756021157007,
+        "y": 5.708745300972228
+      },
+      "isLocked": false,
+      "linkedName": "check3"
+    },
+    {
+      "anchor": {
+        "x": 2.0207067648654977,
+        "y": 5.575818232944336
+      },
+      "prevControl": {
+        "x": 2.0350081893216214,
+        "y": 5.981809795165394
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "check3.5"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootSpeaker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "Testing Autos",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

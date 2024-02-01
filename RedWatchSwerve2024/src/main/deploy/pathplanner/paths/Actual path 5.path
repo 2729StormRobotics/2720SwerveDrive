@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.25,
-        "y": 5.55
+        "x": 2.6502349890550474,
+        "y": 4.358750251354669
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.250110881768349,
-        "y": 5.525237642243224
+        "x": 3.098144443974073,
+        "y": 4.691081468715311
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "check4"
     },
     {
       "anchor": {
-        "x": 1.8,
-        "y": 7.75
+        "x": 1.251043470981618,
+        "y": 5.564966665740624
       },
       "prevControl": {
-        "x": 1.8575838251285879,
-        "y": 6.615985710487045
+        "x": 2.8711476589619847,
+        "y": 5.776790742166554
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "check1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -39,14 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0,
-    "rotateFast": false
+    "rotation": 180.0,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "Testing Autos",
-  "previewStartingState": {
-    "rotation": 180.0,
-    "velocity": 0
-  },
+  "previewStartingState": null,
   "useDefaultConstraints": false
 }
