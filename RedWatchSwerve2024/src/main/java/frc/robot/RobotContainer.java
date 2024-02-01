@@ -4,40 +4,23 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Vision;
-
-import java.io.IOException;
-import java.nio.file.Path;
+import frc.robot.subsystems.LEDs.Color;
+import frc.robot.subsystems.LEDs.LEDSegment;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.math.MathUtil;
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 import frc.robot.commands.*;
 
 /**
@@ -50,7 +33,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Vision m_vision = new Vision();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final LEDs m_lights = new LEDs();
 
   // Will allow to choose which auto command to run from the shuffleboard
   private final SendableChooser<Command> autoChooser;
@@ -73,7 +56,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("visionAlign", new VisionAlign());
     NamedCommands.registerCommand("TestIntake", new TestIntake(m_vision));
     NamedCommands.registerCommand("TestShoot", new TestShoot(m_vision));
-
+    NamedCommands.registerCommand("ColorPurple", new setLEDs(m_lights, LEDs.purple));
+    NamedCommands.registerCommand("ColorRed", new setLEDs(m_lights, LEDs.red));
+    NamedCommands.registerCommand("ColorBlue", new setLEDs(m_lights, LEDs.blue));
+    NamedCommands.registerCommand("ColorWhite", new setLEDs(m_lights, LEDs.white));
+    NamedCommands.registerCommand("ColorRainbow",new RunCommand(()-> LEDSegment.MainStrip.setRainbowAnimation(1)));
+    // RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive))
 
 
     // Configure the button bindings
