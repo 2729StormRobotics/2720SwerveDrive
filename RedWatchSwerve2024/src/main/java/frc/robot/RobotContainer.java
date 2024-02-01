@@ -10,6 +10,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Vision.RotationAlign;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
@@ -70,19 +71,11 @@ public class RobotContainer {
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
-        // new RunCommand(
-        //     () -> m_robotDrive.drive(
-        //         MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-        //         MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-        //         visionDriveMode ? -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband)
-        //         : m_vision.rotationAlign(),
-        //         true, true),
-        //     m_robotDrive));
         new RunCommand(
             () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-                MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-                m_vision.rotationAlign() - MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
           
@@ -99,17 +92,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-
     //locks wheels
     new JoystickButton(m_driverController, Button.kX.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+
     //zero heading 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   
+    //switch to rotation align
     new JoystickButton(m_driverController, Button.kY.value)
-      .whileTrue(new RunCommand(() -> m_robotDrive.drive(m_vision.xAlign(), m_vision.zAlign(), m_vision.rotationAlign(), false, true)));
+      .toggleOnTrue(new RotationAlign(m_robotDrive, m_vision, m_driverController));
+    
   }
 
 

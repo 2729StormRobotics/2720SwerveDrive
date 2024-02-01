@@ -101,18 +101,6 @@ public double getZ() {
     return zPower;
   }
 
-  public double rotationAlign() {
-    setLight(1);
-    double turnError = 0;
-    double turnPower = 0;
-    turnError = getX();
-    if (Math.abs(turnError) < Constants.VisionConstants.kTolerance) {
-      return 0;
-    }
-    turnPower = turnError * Constants.VisionConstants.kPTurn;
-    turnPower += Math.copySign(Constants.VisionConstants.kSTurn, turnPower);
-    return -turnPower;
-  }
 
   public void switchPipeline(int pipeline) {
     table.getEntry("pipeline").setNumber(pipeline);
@@ -134,7 +122,6 @@ public double getZ() {
     SmartDashboard.putNumber("LimelightZ", z);
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putString("Target", Vision.target);
-    SmartDashboard.putNumber("Turn Power for Align", rotationAlign());
     SmartDashboard.putNumber("Skew", getSkew());
     
   }
