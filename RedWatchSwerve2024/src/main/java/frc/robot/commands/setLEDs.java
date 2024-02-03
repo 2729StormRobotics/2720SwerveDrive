@@ -9,11 +9,11 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.LEDs.Color;
 import frc.robot.subsystems.LEDs.LEDSegment;
 
-public class SetLEDColor extends Command {
+public class setLEDs extends Command {
   private LEDs m_leds;
   private Color LEDColor;
   // private LEDSegment LEDSegment = new LedSegment;
-  public SetLEDColor(LEDs leds, Color color) {
+  public setLEDs(LEDs leds, Color color) {
     m_leds = leds;
     LEDColor = color;
     // Use addRequirements() here to declare subsystem dependencies.
