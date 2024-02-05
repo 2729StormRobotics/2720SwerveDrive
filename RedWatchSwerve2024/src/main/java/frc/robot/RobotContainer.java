@@ -9,6 +9,7 @@ import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +26,11 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final double m_rotationMultiplier = 1;
+  private final double m_translationMultiplier = 0.6;
 
+  private final Joystick m_translator = new Joystick(1);
+  private final Joystick m_rotator = new Joystick(2);
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -40,11 +45,18 @@ public class RobotContainer {
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
+        // new RunCommand(
+        //     () -> m_robotDrive.drive(
+        //         -MathUtil.applyDeadband(m_driverController.getLeftY()*m_translationMultiplier, OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(m_driverController.getLeftX()*m_translationMultiplier, OIConstants.kDriveDeadband),
+        //         -MathUtil.applyDeadband(m_driverController.getRightX()*m_rotationMultiplier, OIConstants.kDriveDeadband),
+        //         true, true),
+        //     m_robotDrive));
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_translator.getY()*m_translationMultiplier, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_translator.getX()*m_translationMultiplier, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_rotator.getX()*m_rotationMultiplier, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
   }
@@ -66,7 +78,7 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
-    new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
+    new JoystickButton(m_rotator, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }
 
   /**
