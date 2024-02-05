@@ -1,0 +1,74 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.5,
+      "y": 3.0
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VisionAlign"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeItem"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeItem"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "test1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "test2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VisionAlign"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

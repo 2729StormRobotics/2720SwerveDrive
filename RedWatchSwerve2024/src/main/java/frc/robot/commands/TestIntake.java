@@ -17,8 +17,8 @@ public class TestIntake extends SequentialCommandGroup {
   public TestIntake(Vision m_vision) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    // addCommands(new RunCommand(() -> m_vision.setLight(1)),
-      new WaitCommand(1);
-      // new RunCommand(() -> m_vision.setLight(0)));
+    addCommands(new RunCommand(() -> m_vision.setLight(1)),
+      new WaitCommand(1),
+      new RunCommand(() -> m_vision.setLight(0)));
   }
 }

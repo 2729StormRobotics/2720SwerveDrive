@@ -30,61 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "VisionAlign"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "RevToSpeed"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "ShootSpeaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Run Intake",
-      "waypointRelativePos": 0.1,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "RunIntake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

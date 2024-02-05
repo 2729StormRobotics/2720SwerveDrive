@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -62,17 +63,36 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    
+    // Named Commands
+    NamedCommands.registerCommand("RevToSpeed", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("RevToSpeed!"))
+    ));
+    NamedCommands.registerCommand("IntakeItem", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("IntakeItem!"))
+
+    ));
+    NamedCommands.registerCommand("ShootSpeaker", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("ShootSpeaker!"))
+    ));    
+    NamedCommands.registerCommand("VisionAlign", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("VisionAlign!"))
+    ));
+    NamedCommands.registerCommand("AutoPivot", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("AutoPivot!"))
+    ));
+    NamedCommands.registerCommand("Feed", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("Feed!"))
+    ));
+  NamedCommands.registerCommand("Shoot", new SequentialCommandGroup(
+      new InstantCommand(() -> System.out.println("Shoot!"))
+    ));
+    
+
     // Puts auto chooser onto shuffleboard
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    
-    // Named Commands
-    NamedCommands.registerCommand("revToSpeed", new RevToSpeed());
-    NamedCommands.registerCommand("runIntake", new RunIntake());
-    NamedCommands.registerCommand("shootSpeaker", new ShootSpeaker());
-    NamedCommands.registerCommand("visionAlign", new VisionAlign());
-    NamedCommands.registerCommand("TestIntake", new TestIntake(m_vision));
-    NamedCommands.registerCommand("TestShoot", new TestShoot(m_vision));
+
 
 
 
@@ -94,9 +114,9 @@ public class RobotContainer {
         
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()*0.6, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX()*0.6, OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX()*1, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
   }
@@ -119,7 +139,7 @@ public class RobotContainer {
             m_robotDrive));
 
     new JoystickButton(m_driverController, Button.kA.value).whileTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
-    new JoystickButton(m_driverController, Button.kB.value).whileTrue(new TestShoot(m_vision));
+    new JoystickButton(m_driverController, Button.kB.value).onTrue(new TestShoot(m_vision));
     new JoystickButton(m_driverController, Button.kY.value).whileTrue(new TestIntake(m_vision));
 
   }
@@ -132,6 +152,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("test auto");
     // m_robotDrive.zeroHeading();
+    // return null;
     return autoChooser.getSelected();
   }
 }
