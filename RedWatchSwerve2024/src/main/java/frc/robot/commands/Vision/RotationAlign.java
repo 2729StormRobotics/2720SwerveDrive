@@ -6,7 +6,9 @@ package frc.robot.commands.Vision;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,6 +27,7 @@ public class RotationAlign extends Command {
     m_vision = vision; 
     m_driveSubsystem = driveSubsystem;
     m_driverController = driverController;
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,11 +45,14 @@ public class RotationAlign extends Command {
     turnPower = turnError * Constants.VisionConstants.kPTurn;
     turnPower += Math.copySign(Constants.VisionConstants.kSTurn, turnPower);
 
+    SmartDashboard.putNumber("turnpower", turnPower);
+    SmartDashboard.putNumber("turnerror", turnError);
     m_driveSubsystem.drive(
-      MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
-      MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
-      (-turnPower - MathUtil.applyDeadband(m_driverController.getRightX()/4, OIConstants.kDriveDeadband)),
-      true, true);
+        MathUtil.applyDeadband(m_driverController.getLeftY()/4, OIConstants.kDriveDeadband),
+        MathUtil.applyDeadband(m_driverController.getLeftX()/4, OIConstants.kDriveDeadband),
+        (-turnPower),
+        true, true);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -56,6 +62,7 @@ public class RotationAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(turnError) < Constants.VisionConstants.kTolerance);
+    return false;
+    // return (Math.abs(turnError) < Constants.VisionConstants.kTolerance);
   }
 }
