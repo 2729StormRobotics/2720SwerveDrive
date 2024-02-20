@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
@@ -99,6 +100,13 @@ public double getZ() {
     zPower = zPower * Constants.VisionConstants.kPY;
     zPower += Math.copySign(Constants.VisionConstants.kSDrive, zPower);
     return zPower;
+  }
+
+  public double getDistance(double height) {
+    double vertDistance = height - VisionConstants.kLimeLightHeight;
+    double angle = Math.toRadians(getY()+VisionConstants.kLimeLightAngle);
+    double horizontalDistance = vertDistance/Math.tan(angle);
+    return horizontalDistance;
   }
 
 

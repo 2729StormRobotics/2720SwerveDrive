@@ -163,5 +163,13 @@ public final class Constants {
     public static final int kTolerance = 3;
     public static final double kDistanceTolerance = 0.3;
 
+    // tag tracking PID constants
+    public static final double forwardTrackP = 0;
+    public static final double horizontalTrackP = 0;
+    public static final double rotationTrackP = 0;
+    public static final double forwardTolerance = 999;
+    public static final double horizontalTolerance = 2;
+    public static final double rotationTolerance = 2;
+
   }
 }
