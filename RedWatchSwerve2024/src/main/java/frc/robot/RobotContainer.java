@@ -11,6 +11,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Vision.RotationAlign;
+import frc.robot.commands.Vision.TrackTag;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
@@ -103,7 +104,7 @@ public class RobotContainer {
   
     //switch to rotation align
     new JoystickButton(m_driverController, Button.kY.value)
-      .toggleOnTrue(new RotationAlign(m_robotDrive, m_vision, m_driverController));
+      .toggleOnTrue(new TrackTag(m_robotDrive, m_vision, 1.18));
     
   }
 

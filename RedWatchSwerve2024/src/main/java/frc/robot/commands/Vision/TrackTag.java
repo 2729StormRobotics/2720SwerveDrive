@@ -47,9 +47,9 @@ public class TrackTag extends Command {
   @Override
   public void execute() {
     m_DriveSubsystem.drive(
-      m_horizontalController.calculate(m_vision.getSkew(), 0)/4, 
       m_forwardController.calculate(m_vision.getDistance(m_tagHeight), 0.5)/4,
-      m_rotationController.calculate(m_vision.getX())/4, false, true);
+      -m_horizontalController.calculate(m_vision.getSkew(), 0)/4, 
+      m_rotationController.calculate(m_vision.getX()), false, true);
   }
 
   // Called once the command ends or is interrupted.
