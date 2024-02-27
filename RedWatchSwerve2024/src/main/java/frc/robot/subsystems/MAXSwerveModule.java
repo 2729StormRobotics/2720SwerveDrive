@@ -18,11 +18,11 @@ import com.revrobotics.RelativeEncoder;
 import frc.robot.Constants.ModuleConstants;
 
 public class MAXSwerveModule {
-  private final CANSparkMax m_drivingSparkMax;
-  private final CANSparkMax m_turningSparkMax;
+  public final CANSparkMax m_drivingSparkMax;
+  public final CANSparkMax m_turningSparkMax;
 
-  final RelativeEncoder m_drivingEncoder;
-  final AbsoluteEncoder m_turningEncoder;
+  public final RelativeEncoder m_drivingEncoder;
+  public final AbsoluteEncoder m_turningEncoder;
 
   private final SparkPIDController m_drivingPIDController;
   private final SparkPIDController m_turningPIDController;
