@@ -95,6 +95,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+        SmartDashboard.putNumber("fused heading", m_gyro.getFusedHeading());
+        SmartDashboard.putNumber("Yaw", m_gyro.getAngle());
         SmartDashboard.putNumber("FL turn", m_frontLeft.m_turningEncoder.getPosition());
         SmartDashboard.putNumber("FR turn", m_frontRight.m_turningEncoder.getPosition());
         SmartDashboard.putNumber("BL turn", m_rearLeft.m_turningEncoder.getPosition());

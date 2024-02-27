@@ -85,6 +85,9 @@ public class RobotContainer {
       }
     });
     SmartDashboard.putNumber("Front Left Voltage", m_robotDrive.m_frontLeft.m_drivingSparkMax.getBusVoltage() *m_robotDrive.m_frontLeft.m_drivingSparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Front Right Voltage", m_robotDrive.m_frontRight.m_drivingSparkMax.getBusVoltage() *m_robotDrive.m_frontRight.m_drivingSparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Back Left Voltage", m_robotDrive.m_rearLeft.m_drivingSparkMax.getBusVoltage() *m_robotDrive.m_rearLeft.m_drivingSparkMax.getAppliedOutput());
+    SmartDashboard.putNumber("Back Right Voltage", m_robotDrive.m_rearRight.m_drivingSparkMax.getBusVoltage() *m_robotDrive.m_rearRight.m_drivingSparkMax.getAppliedOutput());
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be
